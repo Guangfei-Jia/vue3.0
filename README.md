@@ -22,3 +22,5 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+# 自动化部署依赖下面两个插件
+ npm install archiver ssh2 -D

@@ -27,9 +27,10 @@
     </el-form>
 </template>
 <script>
-import { register } from "@/api/public";
+import { publicUrl } from "@/api";
+import { postAction } from '@/api/axios';
 import { checkResponse } from "@/utils/utils";
-import routerFunction from "@/composables/routerFunction"
+import baseRouter from "@/composables/baseRouter"
 
 export default {
   data() {
@@ -79,7 +80,7 @@ export default {
     };
   },
   setup(){
-    const { toLogin } = routerFunction();
+    const { toLogin } = baseRouter();
     return {
       toLogin
     }
@@ -89,7 +90,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          register(this.ruleForm).then(res => {
+          postAction(publicUrl.register,this.ruleForm).then(res => {
             if (!checkResponse(res, true)) {
               return false;
             }

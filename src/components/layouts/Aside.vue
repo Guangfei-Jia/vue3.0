@@ -1,4 +1,11 @@
-        
+<!--
+ * @Descripttion: 左侧菜单
+ * @version: 1.0
+ * @Author: fei
+ * @Date: 2021-08-09 15:47:55
+ * @LastEditors: fei
+ * @LastEditTime: 2021-12-22 16:55:52
+-->      
 <template>
   <div>
     <!-- 菜单 -->
@@ -18,7 +25,7 @@
           :key="item.id"
         >
           <i class="el-icon-setting"></i>
-          <span slot="title">{{ item.name }}</span>
+          <template #title>{{ item.name }}</template>
         </el-menu-item>
         <el-submenu
           :index="item.router_url"
@@ -27,7 +34,7 @@
         >
           <template #title>
             <i class="el-icon-location"></i>
-            <span slot="title">{{ item.name }}</span>
+            <span>{{ item.name }}</span>
           </template>
           <template v-for="item_child in item.children">
             <!-- 二级菜单 -->
@@ -43,7 +50,7 @@
               v-if="ifShowMenu(item_child)"
               :key="item_child.id"
             >
-              <span slot="title">{{ item_child.name }}</span>
+              <template #title>{{ item_child.name }}</template>
               <!-- 三级菜单 -->
               <template v-for="item_child_child in item_child.children">
                 <el-menu-item
@@ -73,12 +80,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent, PropType, ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
-import routerFunction from "@/composables/routerFunction";
+import baseRouter from "@/composables/baseRouter";
 import { useStore, mapActions } from "vuex";
-import { menuInterface } from "@/utils/interface";
 import { key } from "@/store/index";
 
 export default defineComponent({
@@ -97,7 +103,7 @@ export default defineComponent({
   },
   emits: ["changeCollapse"],
   setup() {
-    const { toSelf, toLogin } = routerFunction();
+    const { toSelf, toLogin } = baseRouter();
     const { menu } = useStore(key).state;
     let menuList = menu;
 
@@ -116,27 +122,17 @@ export default defineComponent({
         name: "Login",
       });
     };
-    // this.activeIndex = this.$route.path;  //刷新界面菜单更新选中状态
-    return {
-      toSelf,
-      toLogin,
-      menu: menuList,
-      activeIndex,
-      handleSelect,
-    };
-  },
-  computed: {
-    ifShowMenu: function (): Function {
+    const ifShowMenu = computed(function(){
       return function (item: any) {
         let hasChild = false;
         if (item.children) {
-          if (item.children.length === 0 && item.router_type === "1") {
+          if (item.children.length === 0 && item.router_type === 1) {
             hasChild = false;
           }
           if (item.children.length > 0) {
             //有子菜单,且子菜单至少有一个是菜单，即router_type===1
-            let atLeastOne = item.children.some((val: menuInterface) => {
-              return val.router_type === "1";
+            let atLeastOne = item.children.some((val:any) => {
+              return val.router_type === 1;
             });
             if (atLeastOne) {
               hasChild = true;
@@ -145,9 +141,18 @@ export default defineComponent({
             }
           }
         }
-        return item.router_type === "1" && hasChild;
+        return item.router_type === 1 && hasChild;
       };
-    },
+    })
+    // this.activeIndex = this.$route.path;  //刷新界面菜单更新选中状态
+    return {
+      toSelf,
+      toLogin,
+      menu: menuList,
+      activeIndex,
+      handleSelect,
+      ifShowMenu
+    };
   },
   methods: {
     ...mapActions(["SET_LOGOUT", "SET_BREAD"]),

@@ -25,6 +25,8 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, getCurrentInstance } from "vue";
+import { filterObj } from '@/utils/utils';
+
 export default defineComponent({
   emits: ["getList"],
   setup(props, context) {
@@ -37,14 +39,14 @@ export default defineComponent({
 
     //查询触发回调
     const clickSearch = () => {
-      context.emit("getList", searchParam);
+      context.emit("getList", filterObj(searchParam));
     };
 
     //重置表单
     const resetForm = (formSearch: string) => {
       const form: any = proxy.$refs[formSearch];
       form.resetFields();
-      context.emit("getList", searchParam);
+      context.emit("getList", filterObj(searchParam));
     };
 
     return {

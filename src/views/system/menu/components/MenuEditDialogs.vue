@@ -4,7 +4,7 @@
  * @Author: fei
  * @Date: 2021-07-21 10:15:07
  * @LastEditors: fei
- * @LastEditTime: 2021-08-06 14:59:34
+ * @LastEditTime: 2021-12-16 15:06:46
 -->
 <template>
    <el-dialog :title="title" v-model="controlDialog" @close="cancelDialog">
@@ -70,9 +70,9 @@
           prop="router_type"
         >
             <el-select v-model="formAdd.router_type" placeholder="请选择菜单类型">
-                <el-option label="菜单" value="1"></el-option>
-                <el-option label="内页" value="2"></el-option>
-                <el-option label="按钮" value="3"></el-option>
+                <el-option label="菜单" :value="1"></el-option>
+                <el-option label="内页" :value="2"></el-option>
+                <el-option label="按钮" :value="3"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item
@@ -129,7 +129,7 @@ export default defineComponent({
         outer_url: "",
         router_param: "",
         router_param_val: "",
-        router_type: "1",
+        router_type: 1,
         order: "",
         icon_url: "",
         parent_id:""

@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 内部页面框架
+ * @version: 1.0
+ * @Author: fei
+ * @Date: 2021-08-09 15:44:55
+ * @LastEditors: fei
+ * @LastEditTime: 2021-12-23 10:02:35
+-->
 <template>
   <div style="height: 100%">
     <el-container class="wrap">
@@ -32,7 +40,7 @@ import Header from "@/components/layouts/Header.vue";
 import Aside from "@/components/layouts/Aside.vue";
 import RequestLoading from "@/components/RequestLoading.vue";
 import { defineComponent } from "vue";
-
+import waterMark from '@/utils/waterMark';
 export default defineComponent({
   name: "PageLayout",
   components: {
@@ -50,6 +58,11 @@ export default defineComponent({
       this.isCollapse = !this.isCollapse;
     },
   },
+  mounted () {
+    //加水印
+    // waterMark.close();
+    // waterMark.set('1234567', '谁在花里胡哨')
+  }
 });
 </script>
 <style scoped lang="scss">

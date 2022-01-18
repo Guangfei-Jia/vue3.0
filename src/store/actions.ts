@@ -8,21 +8,22 @@
  */
 import { setStore, removeStore } from '@/utils/storage';
 import { checkResponse } from '@/utils/utils';
-import { getUserMenu } from '@/api/public'
+import { publicUrl } from '@/api'
+import { getAction } from '@/api/axios';
 
 export default {
-  SET_LOADING(context:any, data:any) {
+  SET_LOADING(context: any, data: any) {
     context.commit('SET_LOADING', data);
   },
 
-  SET_LOGIN(context:any, data:any) {
+  SET_LOGIN(context: any, data: any) {
     //缓存token和用户信息
     setStore('tokens', data.tokens);
     setStore('userInfo', data.userInfo);
     context.commit('SET_LOGIN', data);
   },
 
-  SET_LOGOUT(context:any, data:any) {
+  SET_LOGOUT(context: any, data: any) {
     //缓存token和用户信息
     removeStore('tokens');
     removeStore('userInfo');
@@ -30,9 +31,9 @@ export default {
     context.commit('SET_LOGOUT');
   },
 
-  SET_MENU(context:any) {
+  SET_MENU(context: any) {
     return new Promise<void>((resolve, reject) => {
-      getUserMenu().then((res:any) => {
+      getAction(publicUrl.userMenuList).then((res: any) => {
         if (!checkResponse(res)) {
           reject();
         }
@@ -43,7 +44,7 @@ export default {
     })
   },
 
-  SET_BREAD(context:any, data:any) {
+  SET_BREAD(context: any, data: any) {
     context.commit('SET_BREAD', data);
   }
 };

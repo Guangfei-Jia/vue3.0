@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 页面顶部
+ * @version: 1.0
+ * @Author: fei
+ * @Date: 2021-08-09 15:42:55
+ * @LastEditors: fei
+ * @LastEditTime: 2021-12-23 10:00:45
+-->
 <template>
   <div>
     <!-- 标题logo -->
@@ -29,10 +37,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useStore, mapActions } from "vuex";
-import { key } from "@/store/index";
+import { mapActions } from "vuex";
+import baseStore from '@/composables/baseStore';
+import baseRouter from "@/composables/baseRouter";
+import { getStore } from '@/utils/storage';
 
-import routerFunction from "@/composables/routerFunction";
 export default defineComponent({
   name: "LayoutHeader",
   data() {
@@ -42,16 +51,13 @@ export default defineComponent({
   },
   props: ["isCollapse"],
   setup() {
-    const { userInfo } = useStore(key).state;
-    let newuserinfo = userInfo;
-    if (typeof userInfo == "string") {
-      newuserinfo = JSON.parse(userInfo);
-    }
-    const { toSelf, toLogin } = routerFunction();
+    // const { userInfo } = baseStore();
+    let userInfo = getStore('userInfo');
+    const { toSelf, toLogin } = baseRouter();
     return {
       toSelf,
       toLogin,
-      userInfo: newuserinfo,
+      userInfo:JSON.parse(userInfo),
     };
   },
   methods: {

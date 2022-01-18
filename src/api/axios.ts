@@ -8,12 +8,12 @@
  */
 import axios from '@/utils/request';
 
-const httpAction = (method: any, url: string, params:object ) => {
-    if(method == 'delete' || method == 'get'){
+const httpAction = (method: any, url: string, params: {}) => {
+    if (method == 'delete' || method == 'get') {
         return axios({
             url,
             method,
-            params:params
+            params: params
         })
     }
     return axios({
@@ -22,16 +22,16 @@ const httpAction = (method: any, url: string, params:object ) => {
         data: params,
     })
 }
-const getAction = (url: string, params:object ) => {
+const getAction = (url: string, params = { }) => {
     return httpAction('get', url, params);
 }
-const postAction = (url: string, params:object ) => {
+const postAction = (url: string, params: object) => {
     return httpAction('post', url, params);
 }
-const putAction = (url: string, params:object ) => {
+const putAction = (url: string, params: object) => {
     return httpAction('put', url, params);
 }
-const deleteAction = (url: string, params:object ) => {
+const deleteAction = (url: string, params: object) => {
     return httpAction('delete', url, params);
 }
 

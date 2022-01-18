@@ -15,10 +15,10 @@
   </el-form>
 </template>
 <script>
-import { sendMail } from '@/api/public';
+import { publicUrl } from "@/api";
+import { postAction } from '@/api/axios';
 import { checkResponse } from '@/utils/utils';
-// import { mapActions } from 'vuex';
-import routerFunction from "@/composables/routerFunction"
+import baseRouter from "@/composables/baseRouter"
 
 export default {
   data() {
@@ -40,7 +40,7 @@ export default {
     };
   },
   setup(){
-    const { toLogin } = routerFunction();
+    const { toLogin } = baseRouter();
     return {
       toLogin
     }
@@ -50,7 +50,7 @@ export default {
     onSubmit() {
       this.$refs['form'].validate(valid => {
         if (valid) {
-          sendMail(this.ruleForm).then(res => {
+          postAction(publicUrl.sendMail,this.ruleForm).then(res => {
             if (!checkResponse(res, true)) {
               return false;
             }

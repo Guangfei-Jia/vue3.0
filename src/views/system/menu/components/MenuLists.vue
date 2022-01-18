@@ -1,10 +1,17 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: fei
+ * @Date: 2021-08-09 15:44:55
+ * @LastEditors: fei
+ * @LastEditTime: 2021-12-16 15:06:01
+-->
 <template>
     <el-table
       :data="list"
       style="width: 100%; margin-bottom: 20px"
       row-key="id"
       border
-      default-expand-all
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column prop="name" label="菜单名称" width=""></el-table-column>
@@ -22,11 +29,11 @@
       <el-table-column prop="router_type" label="类型" width="50">
         <template v-slot="scope">
           {{
-            scope.row.router_type === "1"
+            scope.row.router_type === 1
               ? "菜单"
-              : scope.row.router_type === "2"
+              : scope.row.router_type === 2
               ? "内页"
-              : scope.row.router_type === "3"
+              : scope.row.router_type === 3
               ? "按钮"
               : ""
           }}
@@ -39,7 +46,7 @@
             @click="showDialog('showDialogOfEdit', scope.row, 'child')"
             type="primary"
             plain
-            :disabled="scope.row.router_type === '3'"
+            :disabled="scope.row.router_type === 3"
             >添加下级</el-button
           >
           <el-button

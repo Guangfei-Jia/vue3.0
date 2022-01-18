@@ -1,10 +1,11 @@
-export interface resInterface{
-    code: number,
-    message: string,
-    data: Array<object>
-}
+// export interface resInterface{
+//     code: number,
+//     message: string,
+//     data: Array<object>
+// }
 
-export interface menuInterface{
+//菜单接口
+export interface menuInterface {
     id: number,
     router_url: string,
     router_param: string,
@@ -16,7 +17,7 @@ export interface menuInterface{
     icon_url?: string,
     order?: number,
     parent_id: number,
-    bz?:string | number,
+    bz?: string | number,
     children?: Array<object>,
     create_user?: string,
     del_marker?: number,
@@ -24,29 +25,19 @@ export interface menuInterface{
     updatedAt?: string,
 }
 
-export interface routerInterface{
-    name: string,
-    path: string,
-    component: any,
-    meta: object
-}
-
-// export interface objInterface{
-//     [propName: string]: any;
-// }
-
-interface fileInterface{
+interface fileInterface {
     size: number,
     type: string,
     targetSize: number,
-    arrayBuffer:() => Promise<ArrayBuffer>, 
-    slice:(start?: number | undefined, end?: number | undefined, contentType?: string | undefined) => Blob
-    stream:() => ReadableStream<any>,
-    text:() => Promise<string>
+    arrayBuffer: () => Promise<ArrayBuffer>,
+    slice: (start?: number | undefined, end?: number | undefined, contentType?: string | undefined) => Blob
+    stream: () => ReadableStream<any>,
+    text: () => Promise<string>
 }
 
-export interface canvasImgInterface{
-    file:fileInterface,
+//绘图接口
+export interface canvasImgInterface {
+    file: fileInterface,
     targetSize: number,
     width: number,
     fileName?: string,

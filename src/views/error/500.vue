@@ -1,5 +1,11 @@
 <template>
-  <div class="page-403">
+  <div>
+    500
+    500
+    500
+    500
+    500
+    500
     500
     <!-- <ErrorPage
                 code="403"
@@ -11,9 +17,9 @@
 </template>
 <script>
 // import ErrorPage from '../../components/error/errorPage';
-// export default {
-//     components: {
-//         ErrorPage
-//     }
-// }
+export default {
+    // components: {
+    //     ErrorPage
+    // }
+}
 </script>

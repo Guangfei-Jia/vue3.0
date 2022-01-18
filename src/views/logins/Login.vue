@@ -17,10 +17,11 @@
 </template>
 <script>
 import { getStore } from '@/utils/storage';
-import { login } from '@/api/public';
+import { publicUrl } from '@/api';
+import { deleteAction, postAction, putAction } from '@/api/axios'
 import { checkResponse, createRoute } from '@/utils/utils';
 import { mapActions } from 'vuex';
-import { addRoute } from 'vue-router'
+import waterMark from '@/utils/waterMark';
 
 export default {
   data() {
@@ -35,12 +36,11 @@ export default {
           { min: 5, message: '用户名最少 5 个字符', trigger: 'blur' }
         ],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-      }
+      },
     };
   },
 
   setup(){
-
   },
   methods: {
     ...mapActions(['SET_LOGIN', 'SET_MENU']),
@@ -58,7 +58,7 @@ export default {
     onSubmit() {
       this.$refs['form'].validate(valid => {
         if (valid) {
-          login(this.ruleForm).then(res => {
+          postAction(publicUrl.login,this.ruleForm).then(res => {
             if (!checkResponse(res, true)) {
               return false;
             }
@@ -92,7 +92,7 @@ export default {
               return item.meta ? item.meta.id == menuList[0].id : false;
             });
         if(hasRouter){
-          this.$router.replace('/');
+          this.$router.replace('/index');
           return;
         }
         menuList.forEach(function (v) {
@@ -108,14 +108,14 @@ export default {
                 });
             }
         });
-        // console.log(menuList);
-        // router.getRoutes();
-        // this.$router.addRoute(routerChildren)
-        // this.$router.selfaddRoutes(routes);
-        this.$router.replace('/');
+        this.$router.replace('/index');
+        // waterMark.set('1234567', '谁在花里胡哨')
       }
     }
-  }
+  },
+  // beforeRouteEnter () {
+  //   waterMark.close();
+  // }
 };
 </script>
 

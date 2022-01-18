@@ -4,10 +4,10 @@
  * @Author: fei
  * @Date: 2021-07-01 11:56:46
  * @LastEditors: fei
- * @LastEditTime: 2021-08-04 09:43:38
+ * @LastEditTime: 2021-12-23 09:59:09
  */
 import { getStore } from '@/utils/storage';
-let userInfo =  getStore('userInfo');
+let userInfo = getStore('userInfo');
 let menu = JSON.parse(JSON.stringify(getStore('menu')));
 export default {
   requestLoading: 0, //全局loading

@@ -3,8 +3,8 @@ import Home from '../views/Home.vue'
 import { getStore, setStore } from '@/utils/storage';
 import { isTokenExpired, isTokenWillExpired, message, createRoute } from '@/utils/utils';
 import { store } from '@/store/index'
-import { refreshAccessToken } from '@/api/public';
-
+import { publicUrl } from '@/api';
+import { postAction } from '@/api/axios';
 
 import { menuInterface } from "@/utils/interface"
 
@@ -12,10 +12,10 @@ const UserLayout = () => import(/* webpackChunkName: "logins" */'@/components/la
 const Login = () => import(/* webpackChunkName: "logins" */ '@/views/logins/Login.vue');
 const Register = () => import(/* webpackChunkName: "logins" */ "@/views/logins/Register.vue");
 const Reset = () => import(/* webpackChunkName: "logins" */ "@/views/logins/Reset.vue");
-const page404 = () => import(/* webpackChunkName: "public" */ "@/views/error/404.vue");
+const ErrorLayout = () => import(/* webpackChunkName: "public" */'@/components/layouts/ErrorLayout.vue');
+const page404 = () => import(/* webpackChunkName: "public" */ "@/views/plugins/echart/index.vue");
 const page403 = () => import(/* webpackChunkName: "public" */ "@/views/error/403.vue");
 const page500 = () => import(/* webpackChunkName: "public" */ "@/views/error/500.vue");
-
 let childrenRoutes = [{
   path: "",
   name: "Welcome",
@@ -23,8 +23,8 @@ let childrenRoutes = [{
 }]
 const routes: Array<RouteRecordRaw> = [
   {
-    name:"home",
-    path: "/",
+    name: "home",
+    path: "/index",
     component: Home,
     children: childrenRoutes
   },
@@ -33,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/logins",
     name: "Logins",
     component: UserLayout,
-    children:[
+    children: [
       {
         path: 'login',
         name: 'Login',
@@ -52,42 +52,58 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
-    name: '404',
-    path: '/404',
-    component: () => page404,
-    meta: { model: 'error' }
+    path: "/error",
+    name: "error",
+    component: ErrorLayout,
+    children: [
+      {
+        path: '404',
+        name: '404',
+        component: page404,
+      },
+      {
+        path: '403',
+        name: '403',
+        component: page403
+      },
+      {
+        path: '500',
+        name: '500',
+        component: page500
+      }
+    ]
   },
-  {
-    name: '403',
-    path: '/403',
-    component: () => page403,
-    meta: { model: 'error' }
-  },
-  {
-    name: '500',
-    path: '/500',
-    component: () => page500,
-    meta: { model: 'error' }
-  }
+  // {
+  //   name: '403',
+  //   path: '/error/403',
+  //   component: () => page403,
+  //   meta: { model: 'error' }
+  // },
+  // {
+  //   name: '500',
+  //   path: '/error/500',
+  //   component: () => page500,
+  //   meta: { model: 'error' }
+  // }
 ]
 
 //动态设置路由
 let menu = getStore('menu');
 if (menu) {
   let menuList = JSON.parse(getStore('menu'));
-  menuList.forEach(function (v:menuInterface) {
-      childrenRoutes.push(createRoute(v));
-        if (v.children) {
-            v.children.forEach(function (v2) {
-              childrenRoutes.push(createRoute(v2 as menuInterface));
-                if ((v2 as any).children) {
-                  (v2 as any).children.forEach(function (v3:menuInterface) {
-                      childrenRoutes.push(createRoute(v3));
-                    });
-                }
-            });
+  menuList.forEach(function (v: menuInterface) {
+    childrenRoutes.push(createRoute(v));
+    if (v.children) {
+      v.children.forEach(function (v2) {
+        childrenRoutes.push(createRoute(v2 as menuInterface));
+        if ((v2 as any).children) {
+          (v2 as any).children.forEach(function (v3: menuInterface) {
+            childrenRoutes.push(createRoute(v3));
+          });
         }
-    });
+      });
+    }
+  });
 }
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
@@ -105,6 +121,14 @@ router.beforeEach((to, from, next) => {
   if (!to.path.includes('logins')) {
     if (token) {
       let tokens = JSON.parse(token);
+      // console.log(to)
+      // if (!to.name) {
+      //   console.log(router)
+      //   message('info', '当前页面不存在！')
+      //   next({
+      //     path: '/error/404'
+      //   })
+      // }
       // if (to.path === '/login') {
       //   next({
       //     path: '/'
@@ -127,14 +151,14 @@ router.beforeEach((to, from, next) => {
       if (isTokenExpired(accessTokenExp)) {
         //2小时不操作过期了，删除store，重新登陆
         store.dispatch('SET_LOGOUT');
-        message('error','登陆过期，请重新登陆！')
+        message('error', '登陆过期，请重新登陆！')
         next({
           path: '/logins/login'
         })
       } else {
         //判断accessToken即将到期后刷新token
         if (accessTokenExp && isTokenWillExpired(accessTokenExp)) {
-          refreshAccessToken(refreshToken).then(res => {
+          postAction(publicUrl.refreshAccessToken, { refreshToken }).then(res => {
             tokens.accessToken = res.data.accessToken;
             tokens.accessTokenExp = res.data.accessTokenExp;
             if (res.data.refreshToken) {
@@ -144,7 +168,7 @@ router.beforeEach((to, from, next) => {
           });
         }
       }
-    }else{
+    } else {
       next({
         path: '/logins/login'
       })

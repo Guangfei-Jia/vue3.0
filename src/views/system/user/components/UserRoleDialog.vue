@@ -13,7 +13,7 @@
     destroy-on-close
     @close="cancelDialog"
   >
-    <el-form :model="formAddRole" ref="formRefRole">
+    <el-form :model="formAddRole" ref="formRef">
       <el-form-item>
         <el-checkbox-group v-model="formAddRole.role_id" prop="role_id">
           <el-checkbox
@@ -65,7 +65,7 @@ export default defineComponent({
       controlDialog,
       showDialog: showDialogCopy,
       cancelDialog,
-    } = baseDialog("formRefRole", formAddRole, formDataRole);
+    } = baseDialog("formRef", formAddRole, formDataRole);
     const { list, getList: checkList } = baseList(roleUrl);
 
     //分配角色
@@ -100,7 +100,7 @@ export default defineComponent({
 
     };
 
-    onMounted(checkList);
+    onMounted(() => {checkList({})});
 
     return {
       controlDialog,

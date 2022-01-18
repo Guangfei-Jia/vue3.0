@@ -34,9 +34,9 @@
   </div>
 </template>
 <script>
-import { updateSelf,userDetail } from "@/api/public";
+import { publicUrl } from "@/api";
+import {getAction} from '@/api/axios'
 import { checkResponse } from "@/utils/utils";
-import { mapState } from 'vuex';
   import { useStore,mapActions } from 'vuex'
     import { key } from '@/store/index';
 export default {
@@ -104,7 +104,7 @@ export default {
 
     //初始化页面
     async init(type = "") {
-      userDetail(this.userInfo.userId).then(res => {
+      getAction(publicUrl.userDetail,{id:this.userInfo.userId}).then(res => {
         this.selfForm = res.data;
         this.head_thumb = res.data.head_thumb;
       })

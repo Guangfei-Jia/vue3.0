@@ -1,13 +1,13 @@
-interface configs{
-  production:object,
-  development:object,
-  test:object
+interface configs {
+  production: object,
+  development: object,
+  test: object
 }
 // 一些全局的config配置
-const modeUrlObj:configs = {
+const modeUrlObj: configs = {
   // 生产环境
   'production': {
-    baseURL: 'http://8.129.238.219/pro',
+    baseURL: 'http://114.132.235.185/pro',
     authBaseURL: ''
   },
   // 开发环境
