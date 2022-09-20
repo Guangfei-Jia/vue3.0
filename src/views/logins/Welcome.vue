@@ -9,18 +9,21 @@
 <template>
   <div>
       {{title}}
+      <div v-for="item in list" :ref="setItemRef" :key="item.id">111</div>
+
   </div>
 </template>
-<script>
-
-export default {
+<script lang="ts">
+import {defineComponent, onBeforeUpdate, onUpdated} from 'vue';
+export default defineComponent({
   data() {
     return {
       title:'欢迎登陆！',
+      list:[
+        {id:1,name:'1111'},
+        {id:2,name:'2222'},
+      ]
     };
   },
-  created () {
-    
-  },
-};
+});
 </script>

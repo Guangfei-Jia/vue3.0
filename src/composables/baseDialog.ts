@@ -4,7 +4,7 @@
  * @Author: fei
  * @Date: 2021-08-02 15:14:38
  * @LastEditors: fei
- * @LastEditTime: 2021-12-22 14:07:12
+ * @LastEditTime: 2022-06-22 11:25:11
  */
 import { ref, getCurrentInstance, nextTick, Ref } from 'vue';
 interface dialogObject {
@@ -24,7 +24,6 @@ interface dialogObject {
  * @return {Function} cancelDialog 关闭doalog
  */
 const baseDialog = (refName?: string, formAdd?: any, formData?: any): dialogObject => {
-  const { proxy } = getCurrentInstance() as any;
 
   const dialogWidth = ref("100px");
   const controlDialog = ref(false);
@@ -51,9 +50,7 @@ const baseDialog = (refName?: string, formAdd?: any, formData?: any): dialogObje
    * @return {void}
    */
   const cancelDialog = (callBack?: () => void): void => {
-    if (refName) {
-      proxy.$refs[refName].resetFields();
-    }
+
     controlDialog.value = false;
     callBack && callBack();
   };

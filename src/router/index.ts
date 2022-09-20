@@ -16,6 +16,7 @@ const ErrorLayout = () => import(/* webpackChunkName: "public" */'@/components/l
 const page404 = () => import(/* webpackChunkName: "public" */ "@/views/plugins/echart/index.vue");
 const page403 = () => import(/* webpackChunkName: "public" */ "@/views/error/403.vue");
 const page500 = () => import(/* webpackChunkName: "public" */ "@/views/error/500.vue");
+const introduce = () => import(/* webpackChunkName: "public" */ "@/views/ADV/introduce.vue");
 let childrenRoutes = [{
   path: "",
   name: "Welcome",
@@ -73,6 +74,11 @@ const routes: Array<RouteRecordRaw> = [
       }
     ]
   },
+  {
+    path: "/introduce",
+    name: "introduce",
+    component: introduce,
+  }
   // {
   //   name: '403',
   //   path: '/error/403',
@@ -118,6 +124,10 @@ const router = createRouter({
 const write = ['']
 router.beforeEach((to, from, next) => {
   let token = getStore('tokens');
+  console.log(to)
+  if (to.path.includes('/error') || to.path.includes('/introduce')) {
+    next();
+  }
   if (!to.path.includes('logins')) {
     if (token) {
       let tokens = JSON.parse(token);

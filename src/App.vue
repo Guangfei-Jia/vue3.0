@@ -3,7 +3,14 @@
     <router-view/>
   </div>
 </template>
-
+<script>
+export default {
+  name: 'App',
+  // mounted(){
+  //   document.dispatchEvent(new Event ('render-event'))
+  // }
+}
+</script>
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

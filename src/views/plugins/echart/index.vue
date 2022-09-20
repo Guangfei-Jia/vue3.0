@@ -4,53 +4,53 @@
  * @Author: fei
  * @Date: 2021-12-10 10:27:52
  * @LastEditors: fei
- * @LastEditTime: 2021-12-24 10:09:04
+ * @LastEditTime: 2022-07-31 10:59:02
 -->
 <template>
   <div
     class="outers"
     :style="{
-      backgroundImage: 'url(' + require('@/assets/imgs/mapbg.png') + ')',
+      background: 'url(' + require('@/assets/imgs/mapbg.png') + ')',
     }"
   >
     <p class="systemTitle">
-      委外催收云服务平台
+      地图
     </p>
     <div class="caseCount">
       <div class="caseContent opticys"></div>
       <div class="caseContent">
-        <div class="title">案件统计</div>
+        <div class="title">统计</div>
         <div class="content">
           <div class="flexCenter">
-            <div class="contentTitle">诉讼案件</div>
+            <div class="contentTitle">案件</div>
             <div class="contentValue">
               <div class="val">111</div>
               <div class="item">件</div>
             </div>
           </div>
           <div class="flexCenter">
-            <div class="contentTitle">结案案件</div>
+            <div class="contentTitle">案件</div>
             <div class="contentValue">
               <div class="val">111</div>
               <div class="item">件</div>
             </div>
           </div>
           <div class="flexCenter">
-            <div class="contentTitle">停催案件</div>
+            <div class="contentTitle">案件</div>
             <div class="contentValue">
               <div class="val">222</div>
               <div class="item">件</div>
             </div>
           </div>
           <div class="flexCenter">
-            <div class="contentTitle">委外案件</div>
+            <div class="contentTitle">案件</div>
             <div class="contentValue">
               <div class="val">333</div>
               <div class="item">件</div>
             </div>
           </div>
           <div class="flexCenter">
-            <div class="contentTitle">请款案件</div>
+            <div class="contentTitle">案件</div>
             <div class="contentValue">
               <div class="val">4445544</div>
               <div class="item">件</div>

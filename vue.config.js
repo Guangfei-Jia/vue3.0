@@ -1,6 +1,8 @@
 //vue inspect 查看webpack完整配置vue inspect plugins
 //vue ui 进入可视化页面查看
 const path = require('path')
+const PrerenderSPAPlugin = require("prerender-spa-plugin");                             // 宣传页SEO,预渲染插件，
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer;                                  // 宣传页SEO,预渲染插件
 const CompressionWebpackPlugin = require('compression-webpack-plugin');                 // 开启gzip压缩， 按需引用
 const productionGzipExtensions = ['js', 'css', 'json', 'txt', 'html', 'ico', 'svg']     // 需要gzip压缩的文件后缀，对于png，jpg，jpeg没有压缩效果，对于svg，ico文件以及bmp文件压缩效果达到50%
 const PROD_GZIP = true                                                                  // 是否使用gzip,
@@ -57,7 +59,7 @@ const CDN = {
 
 module.exports = {
     // mode: 'production', //默认生产环境，默认开启tree sharking 和 UglifyJsPlugin代码压缩，development
-    publicPath: IS_PROD ? config.PUBLIC_PATH : '/manage/',         // 公共路径,若使用./嵌套路由将失效
+    publicPath: IS_PROD ? config.PUBLIC_PATH : '/manage/',         // 公共路径,若使用./嵌套路由将失效，预渲染需要注释
     outputDir: process.env.outputDir || 'dist',             // 'dist', 生产环境构建文件的目录
     // assetDir: 'static',                                     // 相对于outputDir的静态资源(js、css、img、fonts)目录
     lintOnSave: false,                                       // 关闭eslint检测 是否在开发环境下通过 eslint-loader 在每次保存时 lint 检测
@@ -172,6 +174,33 @@ module.exports = {
             //         deleteOriginalAssets: false   //是否删除源文件，默认不删除
             //     })
             // )
+
+            // 页面预渲染插件处理
+            config.plugins.push(
+                new PrerenderSPAPlugin({
+                    staticDir: path.join(__dirname, "dist"),
+                    // 对应自己的路由文件，比如a有参数，就需要写成 /a/param1。
+                    //二级路径好像无效，路由最好写成一级
+                    routes: ["/introduce"],
+                    // html文件压缩
+                    minify: {
+                        minifyCSS: true, // css压缩
+                        removeComments: true // 移除注释
+                    },
+                    renderer: new Renderer({
+                        inject: {
+                            // foo: "bar"
+                        },
+                        renderer: new PrerenderSPAPlugin.PuppeteerRenderer({ //这样写renderAfterTime生效了
+                            renderAfterTime: 5000
+                        })
+                        // headless: false,
+                        // 在 main.js 中 document.dispatchEvent(new Event('render-event'))，两者的事件名称要对应上。
+                        // renderAfterDocumentEvent: 'render-event',
+                        // renderAfterTime: 5000
+                    })
+                })
+            )
         }
 
         //开发环境

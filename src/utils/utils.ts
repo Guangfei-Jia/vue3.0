@@ -70,7 +70,7 @@ export const createRoute = (data: menuInterface): any => {
  * @param {类型} type 
  * @param {信息内容} msg 
  */
-export const message: (type: ("" | "success" | "warning" | "info" | "error" | undefined), msg: string) => object = (type: ("" | "success" | "warning" | "info" | "error" | undefined), msg: string): object => {
+export const message = (type: ("" | "success" | "warning" | "info" | "error" | undefined), msg: string) => {
   return ElMessage({
     type: type,
     showClose: true,
